@@ -1,6 +1,57 @@
+# 第1回 勉強会の事前準備 & 演習教材まとめ
+
+このページでは、勉強会に参加する前に準備しておくべき環境と、当日利用する動画教材の内容、さらにGitの基本コマンド一覧をまとめます。  
+あらかじめセットアップを済ませておくと、当日の演習がスムーズに進められます ✅
+
+---
+
+## 🖥️ 1. VS Code のインストール
+
+- [Visual Studio Code 公式サイト](https://code.visualstudio.com/)  
+- 自分の環境（Windows / macOS / Linux）にあわせてダウンロードしてインストールしてください。  
+
+📌 **日本語化**  
+- 拡張機能「Japanese Language Pack for Visual Studio Code」を追加すると、日本語表示になります。  
+
+📌 **おすすめ拡張機能**  
+- [GitHub Pull Requests and Issues](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)  
+- [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)  
+- [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)（必要に応じて）  
+
+---
+
+## 🔧 2. Git (Portable版) のインストール
+
+- [PortableGit（Git for Windows Portable）](https://git-scm.com/download/win)  
+  （インストール不要。解凍するだけで使える）
+
+📌 **手順**
+1. ダウンロードして任意の場所に解凍  
+2. VS Code のターミナルやコマンドプロンプトから `git --version` を実行し、動作確認  
+
+05. Git Portable Installの動画を参考に
+
+---
+
+## 🌐 3. GitHub アカウントの作成
+
+- [GitHub 公式サイト](https://github.com/) にアクセスし、アカウントを作成してください。  
+- 必要な情報
+  - ユーザー名（公開されるので注意）
+  - メールアドレス
+  - パスワード  
+
+📌 **ヒント**  
+- 確認メールを必ず承認してアカウントを有効化  
+- プロフィールアイコンや名前を設定しておくと、勉強会で見つけやすい  
+
+---
+
+## 動画教材
+
 # 01 Gemini CLI Install
 
-VScodeは勝手にインスコしといてください。
+VScodeは先にインスコしといてください。
 
 **0:00〜0:36**  
 コマンドプロンプトを起動し、Gemini CLI のインストールコマンドを入力します。  
@@ -218,28 +269,45 @@ Pull Request について、他のひとが確認してレビューすること�
 
 
 
-🧰 Git よく使うコマンド一覧
-🔧 初期設定・リポジトリ操作
-コマンド	説明
-git init	ローカルリポジトリを初期化
-git remote add origin [URL]	リモートリポジトリを登録
-git remote -v	リモートリポジトリの確認
-📦 ファイルの管理
-コマンド	説明
-git status	現在の変更状況を確認
-git add .	すべての変更をステージに追加
-git add ファイル名	特定のファイルをステージに追加
-git commit -m "メッセージ"	変更を履歴に保存
-git rm ファイル名	ファイルを削除してステージに追加
-git restore ファイル名	削除や変更を元に戻す
-🔁 リモートとのやりとり
-コマンド	説明
-git push origin ブランチ名	リモートにアップロード
-git pull origin ブランチ名	リモートから最新の変更を取得
-git fetch	リモートの情報を取得（変更は反映しない）
-🌿 ブランチ操作
-コマンド	説明
-git branch	ブランチ一覧を表示
-git checkout ブランチ名	既存のブランチに切り替え
-git checkout -b 新ブランチ名	新しいブランチを作成して切り替え
-git checkout -b ローカル名 origin/リモート名	リモートブランチをローカルに作成して切り替え
+---
+
+# 📘 Git よく使うコマンド一覧
+
+### 🔧 初期設定・リポジトリ操作
+| コマンド | 説明 |
+|----------|------|
+| `git init` | ローカルリポジトリを初期化 |
+| `git remote add origin [URL]` | リモートリポジトリを登録 |
+| `git remote -v` | リモートリポジトリの確認 |
+
+### 📦 ファイル管理
+| コマンド | 説明 |
+|----------|------|
+| `git status` | 現在の変更状況を確認 |
+| `git add .` | すべての変更をステージに追加 |
+| `git add ファイル名` | 特定のファイルをステージに追加 |
+| `git commit -m "メッセージ"` | 変更を履歴に保存 |
+| `git rm ファイル名` | ファイルを削除してステージに追加 |
+| `git restore ファイル名` | 削除や変更を元に戻す |
+
+### 🔁 リモートとのやりとり
+| コマンド | 説明 |
+|----------|------|
+| `git push origin ブランチ名` | リモートにアップロード |
+| `git pull origin ブランチ名` | リモートから最新の変更を取得 |
+| `git fetch` | リモートの情報を取得（変更は反映しない） |
+
+### 🌿 ブランチ操作
+| コマンド | 説明 |
+|----------|------|
+| `git branch` | ブランチ一覧を表示 |
+| `git checkout ブランチ名` | 既存のブランチに切り替え |
+| `git checkout -b 新ブランチ名` | 新しいブランチを作成して切り替え |
+| `git checkout -b ローカル名 origin/リモート名` | リモートブランチをローカルに作成して切り替え |
+
+---
+
+📌 **まとめ**  
+- まず VS Code / Git / GitHub アカウントを準備  
+- Gemini CLI を試してみると、AIアプリ開発の流れが理解しやすい  
+- Git の基本操作（init / add / commit / push / pull / branch）は必ずマスター  
