@@ -1,6 +1,6 @@
 # 第2回 勉強会の事前準備 & 演習教材まとめ
 
-[当日スライド](https://docs.google.com/presentation/d/1URwr4s82JoZBNdzaUEL1gXVz1_pQC1hktQoP9OF-TWw/edit?usp=sharing)
+**[当日スライド](https://docs.google.com/presentation/d/1URwr4s82JoZBNdzaUEL1gXVz1_pQC1hktQoP9OF-TWw/edit?usp=sharing)**
 
 このページでは、勉強会に参加する前に準備しておくべき環境と、当日利用する動画教材の内容、さらにGitの基本コマンド一覧をまとめます。  
 あらかじめセットアップを済ませておくと、当日の演習がスムーズに進められます ✅
