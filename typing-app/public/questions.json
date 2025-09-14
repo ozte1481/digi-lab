@@ -1,0 +1,28 @@
+{
+  "japanese": {
+    "short": [
+      "これは短い日本語のテスト文です。",
+      "タイピングの練習をしましょう。",
+      "正確さと速さが重要です。",
+      "次の問題に進みます。",
+      "キーボードを見ないで打てますか？"
+    ],
+    "long": [
+      "長文のタイピングは集中力が必要です。この練習を通じて、あなたのタイピングスキルは飛躍的に向上するでしょう。日本語の文章は、ひらがな、カタカナ、漢字が混在しているため、変換の正確さも求められます。頑張ってください。",
+      "タイピングアプリケーションの開発を進めています。要件定義に基づき、機能実装を行っています。ユーザーが快適に利用できるよう、UI/UXにも配慮した設計を心がけています。進捗は順調で、まもなく最初のバージョンが完成する予定です。"
+    ]
+  },
+  "english": {
+    "short": [
+      "This is a short English test sentence.",
+      "Let's practice typing.",
+      "Accuracy and speed are important.",
+      "Moving on to the next question.",
+      "Can you type without looking at the keyboard?"
+    ],
+    "long": [
+      "Typing long sentences requires concentration. Through this practice, your typing skills will dramatically improve. English sentences are composed of various words and punctuation, so pay attention to details. Good luck.",
+      "We are developing a typing application. Based on the requirements definition, we are implementing the features. We are trying to design with consideration for UI/UX so that users can use it comfortably. Progress is smooth, and the first version will be completed soon."
+    ]
+  }
+}
