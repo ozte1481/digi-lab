@@ -1,13 +1,6 @@
 import React from 'react';
-import { Card, Button, Row, Col } from 'react-bootstrap';
-import { GameResult } from '../App';
 
-interface ResultProps {
-  result: GameResult;
-  onRestart: () => void;
-}
-
-const Result: React.FC<ResultProps> = ({ result, onRestart }) => {
+const Result: React.FC<any> = ({ result, onRestart }) => {
   const { correctCount, totalTyped, wpm } = result;
   const accuracy = totalTyped > 0 ? Math.round((correctCount / totalTyped) * 100) : 0;
 
@@ -28,34 +21,32 @@ const Result: React.FC<ResultProps> = ({ result, onRestart }) => {
   const evaluation = getEvaluation();
 
   return (
-    <Card>
-      <Card.Header as="h2" className="text-center">結果</Card.Header>
-      <Card.Body>
-        <Row className="text-center mb-4">
-          <Col>
-            <Card.Title>WPM</Card.Title>
-            <Card.Text style={{ fontSize: '2rem' }}>{Math.round(wpm)}</Card.Text>
-          </Col>
-          <Col>
-            <Card.Title>正答率</Card.Title>
-            <Card.Text style={{ fontSize: '2rem' }}>{accuracy}%</Card.Text>
-          </Col>
-          <Col>
-            <Card.Title>正答文字数</Card.Title>
-            <Card.Text style={{ fontSize: '2rem' }}>{correctCount}</Card.Text>
-          </Col>
-        </Row>
-        <div className="text-center p-3 mb-3 bg-light rounded">
-          <h3>評価: <span style={{color: 'red'}}>{evaluation.rank}</span></h3>
-          <p>{evaluation.message}</p>
+    <div style={{border: '1px solid #ccc', borderRadius: '8px', padding: '16px'}}>
+      <h2 style={{textAlign: 'center', borderBottom: '1px solid #ccc', paddingBottom: '1rem'}}>結果</h2>
+      <div style={{display: 'flex', justifyContent: 'space-around', textAlign: 'center', margin: '1.5rem 0'}}>
+        <div>
+          <h5>WPM</h5>
+          <p style={{ fontSize: '2rem' }}>{Math.round(wpm)}</p>
         </div>
-        <div className="d-grid">
-          <Button variant="primary" size="lg" onClick={onRestart}>
-            もう一度挑戦する
-          </Button>
+        <div>
+          <h5>正答率</h5>
+          <p style={{ fontSize: '2rem' }}>{accuracy}%</p>
         </div>
-      </Card.Body>
-    </Card>
+        <div>
+          <h5>正答文字数</h5>
+          <p style={{ fontSize: '2rem' }}>{correctCount}</p>
+        </div>
+      </div>
+      <div style={{textAlign: 'center', padding: '1rem', marginBottom: '1rem', backgroundColor: '#f8f9fa', borderRadius: '8px'}}>
+        <h3>評価: <span style={{color: 'red'}}>{evaluation.rank}</span></h3>
+        <p>{evaluation.message}</p>
+      </div>
+      <div style={{display: 'grid'}}>
+        <button onClick={onRestart} style={{padding: '0.75rem', fontSize: '1.25rem'}}>
+          もう一度挑戦する
+        </button>
+      </div>
+    </div>
   );
 };
 

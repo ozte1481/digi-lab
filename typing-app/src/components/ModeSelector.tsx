@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Card, Form, Button, Row, Col } from 'react-bootstrap';
-import { GameOptions } from '../App';
+
+// Defining types directly in the file
+export interface GameOptions {
+  language: 'japanese' | 'english';
+  length: 'short' | 'long';
+}
 
 interface ModeSelectorProps {
   onStart: (options: GameOptions) => void;
@@ -15,38 +19,41 @@ const ModeSelector: React.FC<ModeSelectorProps> = ({ onStart }) => {
   };
 
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title className="text-center">モード選択</Card.Title>
-        <Form>
-          <Form.Group as={Row} className="mb-3" controlId="formLanguage">
-            <Form.Label column sm={4}>言語 (Language)</Form.Label>
-            <Col sm={8}>
-              <Form.Select value={language} onChange={(e) => setLanguage(e.target.value as GameOptions['language'])}>
-                <option value="japanese">日本語</option>
-                <option value="english">English</option>
-              </Form.Select>
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} className="mb-3" controlId="formLength">
-            <Form.Label column sm={4}>問題構成 (Length)</Form.Label>
-            <Col sm={8}>
-              <Form.Select value={length} onChange={(e) => setLength(e.target.value as GameOptions['length'])}>
-                <option value="short">30字</option>
-                <option value="long">300字</option>
-              </Form.Select>
-            </Col>
-          </Form.Group>
-
-          <div className="d-grid">
-            <Button variant="primary" size="lg" onClick={handleStart}>
-              スタート
-            </Button>
-          </div>
-        </Form>
-      </Card.Body>
-    </Card>
+    <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px' }}>
+      <h2 style={{ textAlign: 'center', marginBottom: '16px' }}>モード選択</h2>
+      <div style={{ marginBottom: '16px' }}>
+        <label htmlFor="formLanguage" style={{ display: 'block', marginBottom: '8px' }}>言語 (Language)</label>
+        <select
+          id="formLanguage"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value as GameOptions['language'])}
+          style={{ width: '100%', padding: '8px' }}
+        >
+          <option value="japanese">日本語</option>
+          <option value="english">English</option>
+        </select>
+      </div>
+      <div style={{ marginBottom: '24px' }}>
+        <label htmlFor="formLength" style={{ display: 'block', marginBottom: '8px' }}>問題構成 (Length)</label>
+        <select
+          id="formLength"
+          value={length}
+          onChange={(e) => setLength(e.target.value as GameOptions['length'])}
+          style={{ width: '100%', padding: '8px' }}
+        >
+          <option value="short">30字</option>
+          <option value="long">300字</option>
+        </select>
+      </div>
+      <div style={{ display: 'grid' }}>
+        <button
+          onClick={handleStart}
+          style={{ padding: '12px 16px', fontSize: '1.25rem', cursor: 'pointer' }}
+        >
+          スタート
+        </button>
+      </div>
+    </div>
   );
 };
 

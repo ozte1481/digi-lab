@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { Container } from 'react-bootstrap';
 import ModeSelector from './components/ModeSelector';
 import TypingGame from './components/TypingGame';
 import Result from './components/Result';
 
-// Define types for game state and options
+// Define types directly in the file
 export type GameState = 'selecting' | 'playing' | 'finished';
 export interface GameOptions {
   language: 'japanese' | 'english';
@@ -16,12 +15,10 @@ export interface GameResult {
   wpm: number;
 }
 
-
 function App() {
   const [gameState, setGameState] = useState<GameState>('selecting');
   const [gameOptions, setGameOptions] = useState<GameOptions | null>(null);
   const [gameResult, setGameResult] = useState<GameResult | null>(null);
-
 
   const handleGameStart = (options: GameOptions) => {
     setGameOptions(options);
@@ -42,10 +39,8 @@ function App() {
   const renderGameState = () => {
     switch (gameState) {
       case 'playing':
-        // @ts-ignore
         return <TypingGame options={gameOptions!} onFinish={handleGameFinish} onReset={handleRestart} />;
       case 'finished':
-        // @ts-ignore
         return <Result result={gameResult!} onRestart={handleRestart} />;
       case 'selecting':
       default:
@@ -54,12 +49,12 @@ function App() {
   };
 
   return (
-    <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
-      <div className="w-100" style={{ maxWidth: '800px' }}>
-        <h1 className="text-center mb-4">タイピングアプリ</h1>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: '100%', maxWidth: '800px' }}>
+        <h1 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>タイピングアプリ</h1>
         {renderGameState()}
       </div>
-    </Container>
+    </div>
   );
 }
 
