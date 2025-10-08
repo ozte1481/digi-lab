@@ -1,28 +1,400 @@
-{
-  "japanese": {
-    "short": [
-      "これは短い日本語のテスト文です。",
-      "タイピングの練習をしましょう。",
-      "正確さと速さが重要です。",
-      "次の問題に進みます。",
-      "キーボードを見ないで打てますか？"
-    ],
-    "long": [
-      "長文のタイピングは集中力が必要です。この練習を通じて、あなたのタイピングスキルは飛躍的に向上するでしょう。日本語の文章は、ひらがな、カタカナ、漢字が混在しているため、変換の正確さも求められます。頑張ってください。",
-      "タイピングアプリケーションの開発を進めています。要件定義に基づき、機能実装を行っています。ユーザーが快適に利用できるよう、UI/UXにも配慮した設計を心がけています。進捗は順調で、まもなく最初のバージョンが完成する予定です。"
-    ]
-  },
-  "english": {
-    "short": [
-      "This is a short English test sentence.",
-      "Let's practice typing.",
-      "Accuracy and speed are important.",
-      "Moving on to the next question.",
-      "Can you type without looking at the keyboard?"
-    ],
-    "long": [
-      "Typing long sentences requires concentration. Through this practice, your typing skills will dramatically improve. English sentences are composed of various words and punctuation, so pay attention to details. Good luck.",
-      "We are developing a typing application. Based on the requirements definition, we are implementing the features. We are trying to design with consideration for UI/UX so that users can use it comfortably. Progress is smooth, and the first version will be completed soon."
-    ]
-  }
+﻿{
+  "themes": [
+    {
+      "id": "daily",
+      "label": {
+        "japanese": "日常",
+        "english": "Daily Life"
+      },
+      "availableLanguages": [
+        "japanese",
+        "english"
+      ],
+      "description": "身近な日常シーンを題材にした練習です。",
+      "questions": {
+        "japanese": {
+          "short": [
+            {
+              "text": "朝の冷たい空気が背中をまっすぐ伸ばす。"
+            },
+            {
+              "text": "駅前で友人に渡す手土産を選んでいる。"
+            },
+            {
+              "text": "昼休みに同僚が持参した弁当を交換した。"
+            },
+            {
+              "text": "夕食の支度中に鍋から香る出汁が心地よい。"
+            },
+            {
+              "text": "寝る前に今日の感謝を手帳へ書き留めた。"
+            }
+          ],
+          "long": [
+            {
+              "text": "朝の散歩中に立ち寄ったベーカリーでは、焼き立てのパンが次々と棚に並べられていた。湯気の立つクロワッサンを一つ、季節限定の栗あんぱんを一つ。紙袋を抱えて帰宅すると、家族が香りに誘われてキッチンへ集まり、小さなテーブルがあっという間に朝食の舞台へ変わった。"
+            },
+            {
+              "text": "週末の午後、部屋の整理整頓を一気に終わらせると決めて、不要品を分別しながらBGMにお気に入りのアルバムを流した。引き出しの奥から見つけた学生時代の写真に思わず作業の手が止まり、当時の友人へ久しぶりにメッセージを送る。返信を待つ間に片付けを再開すると、心も空間も軽くなっていくのを感じた。"
+            }
+          ]
+        },
+        "english": {
+          "short": [
+            {
+              "text": "Morning sunlight fills the quiet kitchen."
+            },
+            {
+              "text": "I swapped lunches with a coworker today."
+            },
+            {
+              "text": "Remember to water the plants before bedtime."
+            },
+            {
+              "text": "My phone buzzed with a surprise dinner invite."
+            },
+            {
+              "text": "Stretching my back eased the long commute."
+            }
+          ],
+          "long": [
+            {
+              "text": "On the way home I stopped by a newly opened cafe and ordered their signature latte. The barista carefully poured steamed milk into a swirl, topping it with cinnamon that floated in the evening light. I jotted down notes for next week's meeting while the gentle background music made the remaining errands feel manageable."
+            },
+            {
+              "text": "Our office adopted a focus hour in the afternoon, so I turned off notifications, brewed tea, and cleared my desk. The quiet allowed me to draft a detailed proposal, annotate the spreadsheet with clear comments, and still close my laptop before dusk. It felt like a small victory worth celebrating."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "technology",
+      "label": {
+        "japanese": "テクノロジー",
+        "english": "Technology"
+      },
+      "availableLanguages": [
+        "japanese",
+        "english"
+      ],
+      "description": "開発やITに関するトピックを集めました。",
+      "questions": {
+        "japanese": {
+          "short": [
+            {
+              "text": "最新のベータ版が深夜帯にロールアウトされた。"
+            },
+            {
+              "text": "自動テストの失敗理由をログから即時に把握した。"
+            },
+            {
+              "text": "設計レビューで提案した案が採用されて嬉しい。"
+            },
+            {
+              "text": "機械学習モデルの再学習をスケジュール化した。"
+            },
+            {
+              "text": "リリースノートには改善点と既知の課題を残した。"
+            }
+          ],
+          "long": [
+            {
+              "text": "新しいマイクロサービスを分担して開発するために、チームはアーキテクチャ図をホワイトボードへ描き出し、通信経路と責務を一つずつ議論した。APIゲートウェイの挙動やフェイルオーバー時のログ収集まで確認し、ドキュメント化された結論を共有リポジトリへプッシュすると、各メンバーが同じ方向を向いて走り出せる空気が生まれた。"
+            },
+            {
+              "text": "障害対応訓練の日、監視ダッシュボードに擬似的なアラートを発生させ、手順書通りに優先順位を判断しながら対処した。緊張感のあるシナリオを通じて通知フローの改善点やチーム内の役割分担が明確になり、翌日には学びをまとめたレトロスペクティブが共有チャンネルに流れた。"
+            }
+          ]
+        },
+        "english": {
+          "short": [
+            {
+              "text": "We deployed the beta build during the night window."
+            },
+            {
+              "text": "The failing test revealed a missing environment flag."
+            },
+            {
+              "text": "Design review feedback validated the proposed pattern."
+            },
+            {
+              "text": "We scheduled nightly retraining for the prediction model."
+            },
+            {
+              "text": "Release notes document fixes along with known issues."
+            }
+          ],
+          "long": [
+            {
+              "text": "To align on the new microservice rollout, the team sketched architecture diagrams, discussed message flows, and defined ownership for each endpoint. By the end of the session the plan was committed to the shared repository, allowing everyone to implement confidently without blocking one another."
+            },
+            {
+              "text": "During an incident drill we injected simulated alerts into the monitoring dashboard and rehearsed the escalation path. The exercise highlighted gaps in notification preferences, so we refined the checklist and captured the improvements in a follow-up retrospective."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "travel",
+      "label": {
+        "japanese": "旅",
+        "english": "Travel"
+      },
+      "availableLanguages": [
+        "japanese",
+        "english"
+      ],
+      "description": "旅先の情景や準備をイメージした文章です。",
+      "questions": {
+        "japanese": {
+          "short": [
+            {
+              "text": "旅程表に余白を残し寄り道の楽しみを確保した。"
+            },
+            {
+              "text": "市場で買った果物をホテルのテラスで味わう。"
+            },
+            {
+              "text": "夜行列車のリズムが眠気と高揚を交互に運ぶ。"
+            },
+            {
+              "text": "港に浮かぶ灯りが次の冒険の合図に見えた。"
+            },
+            {
+              "text": "砂浜に描いた足跡が波にさらわれ静かに消えた。"
+            }
+          ],
+          "long": [
+            {
+              "text": "山あいの温泉街に着くと、湯気が静かに立ちのぼる石畳が迎えてくれた。荷物を宿に預け、貸し出しの自転車で川沿いを散策すると、地元の珈琲店で旅人ノートをめくる時間が生まれる。夜には宿の囲炉裏で語られる昔話に耳を傾け、気がつけば時計の針は日付をまたいでいた。"
+            },
+            {
+              "text": "旅の最終日は意図的に予定を詰め込まず、知らない路地を歩きながら音に耳を澄ませた。路面電車のきしむ音、遠くで鳴る教会の鐘、屋台から漂う香辛料。見慣れない景色を少しでも焼き付けようとカメラのシャッターを切り続け、帰り際に手帳へ書き残した感想が次の旅の種になっていく。"
+            }
+          ]
+        },
+        "english": {
+          "short": [
+            {
+              "text": "I left room in the itinerary for hidden alleys."
+            },
+            {
+              "text": "Fresh fruit from the market tasted sweeter outdoors."
+            },
+            {
+              "text": "The night train rhythm lulled me between dreams."
+            },
+            {
+              "text": "Harbor lights hinted at tomorrow's adventure."
+            },
+            {
+              "text": "Footprints faded as the tide smoothed the shore."
+            }
+          ],
+          "long": [
+            {
+              "text": "Upon arriving at the mountain inn, the streets shimmered with steam from the hot springs. I borrowed a bicycle to follow the river path, pausing at a café where travelers share handwritten notes. That evening local stories around the hearth stretched the night into a gentle, timeless memory."
+            },
+            {
+              "text": "For the final day I avoided strict plans, letting the city guide me. Tram bells echoed between stone buildings, street vendors served spiced dishes, and a distant choir practiced in a small chapel. I filled the camera roll with snapshots, promising myself to return once the notes in my journal bloom into a new itinerary."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy-python",
+      "label": {
+        "japanese": "Python写経",
+        "english": "Python Copy Practice",
+        "copy": "Python"
+      },
+      "availableLanguages": [
+        "copy"
+      ],
+      "description": "Pythonの基本構文を写経しながら処理の流れを確認します。",
+      "questions": {
+        "copy": {
+          "short": [
+            {
+              "text": "def greet(name):\n    message = f\"Hello, {name}!\"\n    return message\n\nfor user in [\"Aya\", \"Ken\", \"Mai\"]:\n    print(greet(user))",
+              "explanation": "リストに入った名前を順番に取り出して関数で整形し、挨拶文を表示する処理です。"
+            },
+            {
+              "text": "total = 0\nfor price in [320, 580, 120]:\n    total += price\nprint(f\"合計は{total}円です\")",
+              "explanation": "商品の価格を合計し、フォーマット済みの文字列で結果を表示しています。"
+            }
+          ],
+          "long": [
+            {
+              "text": "from pathlib import Path\n\ndef load_lines(path: Path) -> list[str]:\n    with path.open(encoding=\"utf-8\") as fp:\n        return [line.strip() for line in fp if line.strip()]\n\ndef summarize(lines: list[str]) -> dict[str, int]:\n    summary: dict[str, int] = {}\n    for line in lines:\n        key = line[0].upper()\n        summary[key] = summary.get(key, 0) + 1\n    return summary\n\nwords = load_lines(Path('words.txt'))\ncounts = summarize(words)\nfor key in sorted(counts):\n    print(key, counts[key])",
+              "explanation": "テキストファイルから行を読み込み、行頭の文字ごとに件数を集計し、アルファベット順に出力するスクリプトです。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy-cmd",
+      "label": {
+        "japanese": "コマンド写経",
+        "english": "Command Prompt Copy",
+        "copy": "cmd"
+      },
+      "availableLanguages": [
+        "copy"
+      ],
+      "description": "Windowsコマンドでファイル操作を練習します。",
+      "questions": {
+        "copy": {
+          "short": [
+            {
+              "text": "mkdir reports\ncd reports\ntype nul > summary.txt\ndir",
+              "explanation": "ディレクトリを作成して移動し、空のテキストファイルを作成してからファイル一覧を表示します。"
+            },
+            {
+              "text": "set LOG_DIR=%USERPROFILE%\ncd /d %LOG_DIR%\nforfiles /m *.log /c \"cmd /c type @file\"",
+              "explanation": "ユーザーディレクトリに移動し、拡張子がlogのファイルを順番に表示するコマンドです。"
+            }
+          ],
+          "long": [
+            {
+              "text": "@echo off\nset BACKUP=%USERPROFILE%\\backups\nif not exist %BACKUP% mkdir %BACKUP%\nfor %%F in (*.txt) do (\n    echo Copying %%F\n    copy %%F %BACKUP% >nul\n)\necho Done.",
+              "explanation": "バッチファイル形式で現在のフォルダにあるテキストファイルをバックアップ用ディレクトリへコピーする処理です。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy-html",
+      "label": {
+        "japanese": "HTML写経",
+        "english": "HTML Copy Practice",
+        "copy": "HTML"
+      },
+      "availableLanguages": [
+        "copy"
+      ],
+      "description": "HTMLの構造を意識しながらタグを書き写します。",
+      "questions": {
+        "copy": {
+          "short": [
+            {
+              "text": "<section class=\"hero\">\n  <h1>Typing Camp</h1>\n  <p>練習を一日の習慣に。</p>\n  <a href=\"/start\" class=\"cta\">挑戦する</a>\n</section>",
+              "explanation": "ヒーローセクションの見出し・本文・リンクを含む基本的な構造を写経します。"
+            },
+            {
+              "text": "<ul class=\"schedule\">\n  <li>Warm-up: 5min</li>\n  <li>Practice: 20min</li>\n  <li>Review: 5min</li>\n</ul>",
+              "explanation": "時間配分を示すリストタグを用い、順序を持たない項目の並びを練習します。"
+            }
+          ],
+          "long": [
+            {
+              "text": "<!DOCTYPE html>\n<html lang=\"ja\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>Practice Tracker</title>\n  </head>\n  <body>\n    <header>\n      <h1>Typing Practice Tracker</h1>\n      <nav>\n        <a href=\"/daily\">日次</a>\n        <a href=\"/weekly\">週次</a>\n        <a href=\"/goals\">目標</a>\n      </nav>\n    </header>\n    <main>\n      <article>\n        <h2>Focus Sessions</h2>\n        <p>記録を振り返り集中度の推移を把握しましょう。</p>\n      </article>\n    </main>\n  </body>\n</html>",
+              "explanation": "HTML文書の基本構造を通して、ヘッダーやナビゲーション、本文セクションの配置を確認します。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy-sql",
+      "label": {
+        "japanese": "SQL写経",
+        "english": "SQL Copy Practice",
+        "copy": "SQL"
+      },
+      "availableLanguages": [
+        "copy"
+      ],
+      "description": "SQLクエリを写経しながら抽出や集計の流れを確認します。",
+      "questions": {
+        "copy": {
+          "short": [
+            {
+              "text": "SELECT user_id, email\nFROM users\nWHERE deleted_at IS NULL\nORDER BY created_at DESC;",
+              "explanation": "論理削除されていない利用者を作成日時の降順で取得する基本的なSELECT文です。"
+            },
+            {
+              "text": "UPDATE products\nSET stock = stock - 1\nWHERE product_id = :product_id\n  AND stock > 0;",
+              "explanation": "在庫が残っている場合のみ数量を1つ減らす安全なUPDATE文です。"
+            }
+          ],
+          "long": [
+            {
+              "text": "WITH daily_sales AS (\n  SELECT\n    order_date::date AS day,\n    SUM(amount) AS total\n  FROM orders\n  WHERE status = 'completed'\n  GROUP BY day\n),\nranked AS (\n  SELECT\n    day,\n    total,\n    RANK() OVER (ORDER BY total DESC) AS sales_rank\n  FROM daily_sales\n)\nSELECT day, total, sales_rank\nFROM ranked\nWHERE sales_rank <= 5\nORDER BY day;",
+              "explanation": "日別の売上合計を集計し、上位5日のランキングを求めて日付順に出力するクエリです。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy-json",
+      "label": {
+        "japanese": "JSON写経",
+        "english": "JSON Copy Practice",
+        "copy": "JSON"
+      },
+      "availableLanguages": [
+        "copy"
+      ],
+      "description": "JSON形式のデータ構造を写経しながらキーと値の関係を把握します。",
+      "questions": {
+        "copy": {
+          "short": [
+            {
+              "text": "{\n  \"id\": 1024,\n  \"title\": \"Weekly Report\",\n  \"tags\": [\"team\", \"progress\"],\n  \"published\": true\n}",
+              "explanation": "配列や真偽値を含むシンプルなオブジェクトで、基本的な整形とカンマ位置を意識して練習します。"
+            },
+            {
+              "text": "{\n  \"service\": \"analytics\",\n  \"retry\": {\n    \"interval\": 5,\n    \"maxAttempts\": 3\n  },\n  \"endpoints\": [\n    \"/events\",\n    \"/metrics\"\n  ]\n}",
+              "explanation": "ネストしたオブジェクトと配列を含む構造で、入れ子のインデントを練習します。"
+            }
+          ],
+          "long": [
+            {
+              "text": "{\n  \"version\": \"1.0\",\n  \"metadata\": {\n    \"createdAt\": \"2024-02-01T10:00:00Z\",\n    \"owner\": \"data-team\"\n  },\n  \"dashboards\": [\n    {\n      \"id\": \"sales\",\n      \"widgets\": [\n        {\n          \"type\": \"chart\",\n          \"query\": \"SELECT region, SUM(total) FROM sales GROUP BY region\"\n        },\n        {\n          \"type\": \"stat\",\n          \"label\": \"Active Users\",\n          \"source\": \"users.active\"\n        }\n      ]\n    },\n    {\n      \"id\": \"support\",\n      \"widgets\": [\n        {\n          \"type\": \"table\",\n          \"columns\": [\"ticket_id\", \"status\", \"assignee\"],\n          \"source\": \"tickets.open\"\n        }\n      ]\n    }\n  ]\n}",
+              "explanation": "ダッシュボード設定の例として、複数レベルのネストを含むJSONオブジェクトを書き写します。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy-yaml",
+      "label": {
+        "japanese": "YAML写経",
+        "english": "YAML Copy Practice",
+        "copy": "YAML"
+      },
+      "availableLanguages": [
+        "copy"
+      ],
+      "description": "YAMLのインデントとシーケンス記法に慣れるための写経テーマです。",
+      "questions": {
+        "copy": {
+          "short": [
+            {
+              "text": "service: notifier\nretries: 3\nenabled: true\nchannels:\n  - email\n  - slack",
+              "explanation": "基本的なキーと配列の書き方を練習するシンプルな設定です。"
+            },
+            {
+              "text": "database:\n  host: localhost\n  port: 5432\n  credentials:\n    user: app_user\n    password: secret",
+              "explanation": "ネストしたマップを記述し、インデント幅をそろえる練習をします。"
+            }
+          ],
+          "long": [
+            {
+              "text": "pipelines:\n  nightly-build:\n    triggers:\n      schedule: \"0 1 * * *\"\n    steps:\n      - name: checkout\n        uses: actions/checkout@v4\n      - name: install\n        run: pip install -r requirements.txt\n      - name: test\n        run: pytest --maxfail=1\n  deploy-preview:\n    triggers:\n      branches:\n        - feature/*\n    environment: staging\n    steps:\n      - name: build\n        run: npm run build\n      - name: deploy\n        run: npm run deploy:staging",
+              "explanation": "CIパイプラインの設定例を通して、複数レベルの入れ子やリストを扱うYAML文法を確認します。"
+            }
+          ]
+        }
+      }
+    }
+  ]
 }
