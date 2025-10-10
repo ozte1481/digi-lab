@@ -50,7 +50,7 @@ export interface FlowSummary {
 export interface GameResult {
   correctCount: number;
   totalTyped: number;
-  wpm: number;
+  cpm: number;
   accuracy: number;
   elapsedSeconds: number;
   flow: FlowSummary;

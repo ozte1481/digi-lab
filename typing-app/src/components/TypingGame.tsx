@@ -23,6 +23,7 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
   const [timer, setTimer] = useState(GAME_DURATION);
   const [isGameRunning, setIsGameRunning] = useState(false);
   const [totalTyped, setTotalTyped] = useState(0);
+  const [scoringTotalTyped, setScoringTotalTyped] = useState(0);
   const [correctTyped, setCorrectTyped] = useState(0);
   const [flowStreak, setFlowStreak] = useState(0);
   const [maxFlowStreak, setMaxFlowStreak] = useState(0);
@@ -44,6 +45,11 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
 
   const isCopyMode = options.language === 'copy';
 
+  const removeOptionalWhitespace = useCallback(
+    (value: string) => (isCopyMode ? value.replace(/[ 	]/g, '') : value),
+    [isCopyMode],
+  );
+
   const selectedTheme = useMemo(
     () => questionBank.themes.find((theme) => theme.id === options.themeId),
     [questionBank, options.themeId],
@@ -62,6 +68,7 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
     setTimer(GAME_DURATION);
     setIsGameRunning(false);
     setTotalTyped(0);
+    setScoringTotalTyped(0);
     setCorrectTyped(0);
     setFlowStreak(0);
     setMaxFlowStreak(0);
@@ -77,10 +84,20 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
 
   const currentQuestion = questions[currentQuestionIndex] ?? null;
   const questionText = currentQuestion?.text ?? '';
+  const scoringQuestionText = useMemo(
+    () => removeOptionalWhitespace(questionText),
+    [questionText, removeOptionalWhitespace],
+  );
   const elapsedSeconds = Math.min(GAME_DURATION, GAME_DURATION - timer);
-  const accuracy = totalTyped > 0 ? Math.round((correctTyped / totalTyped) * 100) : 100;
-  const effectiveTypedForSpeed = options.language === 'japanese' ? keystrokeCount : totalTyped;
-  const wpm = (() => {
+  const totalForAccuracy = isCopyMode ? scoringTotalTyped : totalTyped;
+  const accuracy = totalForAccuracy > 0 ? Math.round((correctTyped / totalForAccuracy) * 100) : 100;
+  const effectiveTypedForSpeed =
+    options.language === 'japanese'
+      ? keystrokeCount
+      : isCopyMode
+        ? scoringTotalTyped
+        : totalTyped;
+  const cpm = (() => {
     if (effectiveTypedForSpeed === 0) {
       return 0;
     }
@@ -88,7 +105,7 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
       1,
       startTimestampRef.current ? Math.floor((Date.now() - startTimestampRef.current) / 1000) : elapsedSeconds,
     );
-    return Math.round(((effectiveTypedForSpeed / 5) / (elapsed / 60)) || 0);
+    return Math.round((effectiveTypedForSpeed / (elapsed / 60)) || 0);
   })();
 
   const finalizeGame = useCallback(() => {
@@ -105,12 +122,18 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
     })();
 
     const minutes = endElapsedSeconds / 60;
-    const typedForSpeed = options.language === 'japanese' ? keystrokeCount : totalTyped;
-    const computedWpm = typedForSpeed === 0 ? 0 : (typedForSpeed / 5) / minutes;
+    const typedForSpeed =
+      options.language === 'japanese'
+        ? keystrokeCount
+        : isCopyMode
+          ? scoringTotalTyped
+          : totalTyped;
+    const computedCpm = typedForSpeed === 0 ? 0 : typedForSpeed / minutes;
+    const totalTypedForResult = isCopyMode ? scoringTotalTyped : totalTyped;
     const result: GameResult = {
       correctCount: correctTyped,
-      totalTyped,
-      wpm: Math.round(computedWpm),
+      totalTyped: totalTypedForResult,
+      cpm: Math.round(computedCpm),
       accuracy,
       elapsedSeconds: endElapsedSeconds,
       flow: {
@@ -122,7 +145,7 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
 
     setIsGameRunning(false);
     onFinish(result);
-  }, [accuracy, bonusTimeEarned, correctTyped, elapsedSeconds, keystrokeCount, maxFlowStreak, onFinish, options.language, skillPoints, totalTyped]);
+  }, [accuracy, bonusTimeEarned, correctTyped, elapsedSeconds, isCopyMode, keystrokeCount, maxFlowStreak, onFinish, options.language, scoringTotalTyped, skillPoints, totalTyped]);
 
   useEffect(() => {
     if (!isGameRunning || hasFinishedRef.current) {
@@ -216,18 +239,25 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
         setTotalTyped((prev) => prev + delta);
       }
 
-      if (!questionText.startsWith(normalizedValue)) {
+      const previousScoring = removeOptionalWhitespace(previousProcessed);
+      const currentScoring = removeOptionalWhitespace(normalizedValue);
+      const scoringDelta = currentScoring.length - previousScoring.length;
+      if (scoringDelta > 0) {
+        setScoringTotalTyped((prev) => prev + scoringDelta);
+      }
+
+      if (!scoringQuestionText.startsWith(currentScoring)) {
         hasMistakeRef.current = true;
       }
 
       processedValueRef.current = normalizedValue;
 
-      if (normalizedValue === questionText) {
-        const questionLength = questionText.length;
-        setCorrectTyped((prev) => prev + questionLength);
+      if (currentScoring === scoringQuestionText) {
+        const questionScoreLength = scoringQuestionText.length;
+        setCorrectTyped((prev) => prev + questionScoreLength);
 
-        const basePoints = questionLength;
-        const precisionBonus = hasMistakeRef.current ? 0 : Math.max(5, Math.round(questionLength * 0.4));
+        const basePoints = questionScoreLength;
+        const precisionBonus = hasMistakeRef.current ? 0 : Math.max(5, Math.round(questionScoreLength * 0.4));
         setSkillPoints((prev) => prev + basePoints + precisionBonus);
 
         handleFlowAfterQuestion();
@@ -242,7 +272,14 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
         });
       }
     },
-    [currentQuestion, handleFlowAfterQuestion, isGameRunning, normalizeInput, questionText],
+    [
+      currentQuestion,
+      handleFlowAfterQuestion,
+      isGameRunning,
+      normalizeInput,
+      removeOptionalWhitespace,
+      scoringQuestionText,
+    ],
   );
 
   const handleKeyDown = useCallback(
@@ -257,7 +294,26 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
 
       const key = event.key;
 
-      if (event.isComposing || key === 'Process' || key === 'Unidentified') {
+      if (isCopyMode && key === 'Tab') {
+        event.preventDefault();
+        const target = event.currentTarget;
+        const indent = '  ';
+        const selectionStart = target.selectionStart ?? target.value.length;
+        const selectionEnd = target.selectionEnd ?? target.value.length;
+        const newValue = `${target.value.slice(0, selectionStart)}${indent}${target.value.slice(selectionEnd)}`;
+        target.value = newValue;
+        if (typeof target.setSelectionRange === 'function') {
+          const nextPosition = selectionStart + indent.length;
+          requestAnimationFrame(() => {
+            target.setSelectionRange(nextPosition, nextPosition);
+          });
+        }
+        processInputValue(newValue, { forceProcess: true });
+        setKeystrokeCount((prev) => prev + 1);
+        return;
+      }
+
+      if (event.nativeEvent.isComposing || key === 'Process' || key === 'Unidentified') {
         setKeystrokeCount((prev) => prev + 1);
         return;
       }
@@ -269,7 +325,7 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
         setKeystrokeCount((prev) => prev + 1);
       }
     },
-    [],
+    [isCopyMode, processInputValue],
   );
 
   const handleTyping = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -282,40 +338,112 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
     return `${minutes}:${seconds}`;
   };
 
+  const scoringTypedText = useMemo(
+    () => removeOptionalWhitespace(typedText),
+    [removeOptionalWhitespace, typedText],
+  );
+
   const renderedQuestion = useMemo(() => {
+    if (!isCopyMode) {
+      const elements: React.ReactNode[] = [];
+
+      for (let index = 0; index < questionText.length; index += 1) {
+        const char = questionText[index];
+
+        if (char === '\\n') {
+          elements.push(<br key={`${currentQuestionIndex}-break-${index}`} />);
+          continue;
+        }
+
+        const isTyped = index < typedText.length;
+        const typedChar = typedText[index] ?? '';
+        const isCorrect = isTyped && typedChar === char;
+
+        elements.push(
+          <span
+            key={`${currentQuestionIndex}-${index}`}
+            style={{
+              color: isTyped ? (isCorrect ? '#198754' : '#dc3545') : '#212529',
+              backgroundColor: isTyped ? (isCorrect ? '#d1e7dd' : '#f8d7da') : 'transparent',
+              borderBottom: char === ' ' ? '1px dotted rgba(108, 117, 125, 0.6)' : 'none',
+              padding: char === ' ' ? '0 0.1em' : 0,
+              display: char === ' ' ? 'inline-block' : 'inline',
+              minWidth: char === ' ' ? '0.4em' : undefined,
+            }}
+          >
+            {char === ' ' ? ' ' : char}
+          </span>,
+        );
+      }
+
+      return elements;
+    }
+
+
     const elements: React.ReactNode[] = [];
+    let scoringCursor = 0;
 
     for (let index = 0; index < questionText.length; index += 1) {
       const char = questionText[index];
 
-      if (char === '\n') {
+      if (char === '\\n') {
+        const hasTypedNewline = scoringCursor < scoringTypedText.length && scoringTypedText[scoringCursor] === '\\n';
+        if (hasTypedNewline) {
+          scoringCursor += 1;
+        }
         elements.push(<br key={`${currentQuestionIndex}-break-${index}`} />);
         continue;
       }
 
-      const isTyped = index < typedText.length;
-      const typedChar = typedText[index] ?? '';
-      const isCorrect = isTyped && typedChar === char;
+      if (char === ' ' || char === '	') {
+        const isTyped = scoringTypedText.length > scoringCursor;
+        elements.push(
+          <span
+            key={`${currentQuestionIndex}-${index}`}
+            style={{
+              color: isTyped ? '#198754' : '#212529',
+              backgroundColor: isTyped ? '#d1e7dd' : 'transparent',
+              borderBottom: '1px dotted rgba(108, 117, 125, 0.6)',
+              padding: char === ' ' ? '0 0.1em' : '0 0.3em',
+              display: 'inline-block',
+              minWidth: char === ' ' ? '0.4em' : '1.2em',
+            }}
+          >
+            {char === ' ' ? ' ' : '  '}
+          </span>,
+        );
+        continue;
+      }
+
+      const hasTypedChar = scoringCursor < scoringTypedText.length;
+      const typedChar = hasTypedChar ? scoringTypedText[scoringCursor] : '';
+      const isCorrect = hasTypedChar && typedChar === char;
+      if (hasTypedChar) {
+        scoringCursor += 1;
+      }
 
       elements.push(
         <span
           key={`${currentQuestionIndex}-${index}`}
           style={{
-            color: isTyped ? (isCorrect ? '#198754' : '#dc3545') : '#212529',
-            backgroundColor: isTyped ? (isCorrect ? '#d1e7dd' : '#f8d7da') : 'transparent',
-            borderBottom: char === ' ' ? '1px dotted rgba(108, 117, 125, 0.6)' : 'none',
-            padding: char === ' ' ? '0 0.1em' : 0,
-            display: char === ' ' ? 'inline-block' : 'inline',
-            minWidth: char === ' ' ? '0.4em' : undefined,
+            color: hasTypedChar ? (isCorrect ? '#198754' : '#dc3545') : '#212529',
+            backgroundColor: hasTypedChar ? (isCorrect ? '#d1e7dd' : '#f8d7da') : 'transparent',
+            borderBottom: 'none',
+            padding: 0,
+            display: 'inline',
           }}
         >
-          {char === ' ' ? '\u00a0' : char}
+          {char === ' ' ? ' ' : char}
         </span>,
       );
     }
 
+
+
     return elements;
-  }, [currentQuestionIndex, questionText, typedText]);
+  }, [currentQuestionIndex, isCopyMode, questionText, scoringTypedText, typedText]);
+
+
 
   if (!selectedTheme) {
     return (
@@ -334,7 +462,7 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
     <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px' }} translate="no">
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', gap: '0.5rem', marginBottom: '1rem' }} className="notranslate">
         <h4 style={{ margin: 0 }}>Time: {formatTime(timer)}</h4>
-        <h4 style={{ margin: 0 }}>WPM: {wpm}</h4>
+        <h4 style={{ margin: 0 }}>CPM: {cpm}</h4>
         <h4 style={{ margin: 0 }}>Accuracy: {accuracy}%</h4>
         <h4 style={{ margin: 0 }}>Flow: {flowStreak}</h4>
       </div>
