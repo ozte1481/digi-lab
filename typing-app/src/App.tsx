@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ModeSelector from './components/ModeSelector';
 import TypingGame from './components/TypingGame';
 import Result from './components/Result';
@@ -87,12 +87,9 @@ function App() {
   };
 
   return (
-    <div
-      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      translate="no"
-    >
-      <div style={{ width: '100%', maxWidth: '800px' }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>タイピングアプリ</h1>
+    <div className="d-flex align-items-center justify-content-center min-vh-100" translate="no">
+      <div className="container text-center" style={{ maxWidth: '800px' }}>
+        <h1 className="mb-4">タイピングアプリ</h1>
         {renderGameState()}
       </div>
     </div>

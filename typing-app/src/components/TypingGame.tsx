@@ -1,4 +1,4 @@
-﻿import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { GameOptions, GameResult, QuestionBank, QuestionPrompt } from '../types';
 
 interface TypingGameProps {
@@ -459,14 +459,24 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
   }
 
   return (
-    <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px' }} translate="no">
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', gap: '0.5rem', marginBottom: '1rem' }} className="notranslate">
-        <h4 style={{ margin: 0 }}>Time: {formatTime(timer)}</h4>
-        <h4 style={{ margin: 0 }}>CPM: {cpm}</h4>
-        <h4 style={{ margin: 0 }}>Accuracy: {accuracy}%</h4>
-        <h4 style={{ margin: 0 }}>Flow: {flowStreak}</h4>
+    <div className="card" translate="no">
+      <div className="card-header bg-light text-dark notranslate">
+        <div className="row text-center">
+          <div className="col">
+            <h5 className="mb-0">Time: {formatTime(timer)}</h5>
+          </div>
+          <div className="col">
+            <h5 className="mb-0">CPM: {cpm}</h5>
+          </div>
+          <div className="col">
+            <h5 className="mb-0">Accuracy: {accuracy}%</h5>
+          </div>
+          <div className="col">
+            <h5 className="mb-0">Flow: {flowStreak}</h5>
+          </div>
+        </div>
       </div>
-
+      <div className="card-body">
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1rem', backgroundColor: '#f1f3f5', borderRadius: '8px', padding: '0.75rem' }}>
         <div>
           <strong>Skill Points</strong>
@@ -562,6 +572,7 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
       <div style={{ textAlign: 'center', marginTop: '1rem' }}>
         <button onClick={onReset}>リセット</button>
       </div>
+    </div>
     </div>
   );
 };
