@@ -391,29 +391,29 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
   const timeRatio = (timer / GAME_DURATION) * 100;
 
   return (
-    <div className="card shadow-lg" translate="no">
-      <div className="card-header bg-dark text-white-50">
+    <div className="card game-card">
+      <div className="card-header game-header">
         <div className="row align-items-center text-center g-2">
           <div className="col-md-3">
-            <div className="small">TIME</div>
-            <div className="fs-4 fw-bold text-white">{formatTime(timer)}</div>
+            <div className="stats-label">TIME</div>
+            <div className="fs-4 fw-bold stats-value">{formatTime(timer)}</div>
           </div>
           <div className="col-md-3">
-            <div className="small">CPM</div>
-            <div className="fs-4 fw-bold text-white">{cpm}</div>
+            <div className="stats-label">CPM</div>
+            <div className="fs-4 fw-bold stats-value">{cpm}</div>
           </div>
           <div className="col-md-3">
-            <div className="small">ACCURACY</div>
-            <div className="fs-4 fw-bold text-white">{accuracy}%</div>
+            <div className="stats-label">ACCURACY</div>
+            <div className="fs-4 fw-bold stats-value">{accuracy}%</div>
           </div>
           <div className="col-md-3">
-            <div className="small">FLOW</div>
-            <div className="fs-4 fw-bold text-white">{flowStreak}</div>
+            <div className="stats-label">FLOW</div>
+            <div className="fs-4 fw-bold stats-value">{flowStreak}</div>
           </div>
         </div>
         <div className="progress mt-2" style={{ height: '4px' }}>
           <div
-            className={`progress-bar ${timeRatio < 15 ? 'bg-danger' : timeRatio < 40 ? 'bg-warning' : 'bg-success'}`}
+            className={`progress-bar ${timeRatio < 15 ? 'bg-danger' : timeRatio < 40 ? 'bg-warning' : ''}`}
             role="progressbar"
             style={{ width: `${timeRatio}%` }}
             aria-valuenow={timer}
@@ -425,15 +425,15 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
       <div className="card-body p-4">
         <div className="row text-center mb-4 g-3">
           <div className="col">
-            <div className="small text-white-50">SKILL PTS</div>
+            <div className="stats-label">SKILL PTS</div>
             <div className="fs-5 fw-bold">{skillPoints}</div>
           </div>
           <div className="col">
-            <div className="small text-white-50">MAX FLOW</div>
+            <div className="stats-label">MAX FLOW</div>
             <div className="fs-5 fw-bold">{maxFlowStreak}</div>
           </div>
           <div className="col">
-            <div className="small text-white-50">BONUS</div>
+            <div className="stats-label">BONUS</div>
             <div className="fs-5 fw-bold">+{bonusTimeEarned}s</div>
           </div>
         </div>

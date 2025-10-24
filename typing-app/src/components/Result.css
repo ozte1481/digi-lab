@@ -1,0 +1,63 @@
+
+.result-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.result-header {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-title {
+  color: var(--color-accent-secondary);
+  text-shadow: 0 0 15px rgba(255, 134, 126, 0.5);
+}
+
+.stats-label-result {
+  color: var(--color-support-lavender);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.stats-value-result {
+  color: var(--color-text-light);
+}
+
+.rank-alert {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--color-accent-primary);
+}
+
+.rank-text {
+  color: var(--color-accent-primary);
+  text-shadow: 0 0 10px rgba(255, 107, 59, 0.5);
+}
+
+.table {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--color-text-light);
+}
+
+.table-dark {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: var(--color-text-light);
+}
+
+.table-primary {
+  background-color: rgba(255, 107, 59, 0.2);
+  color: var(--color-text-light);
+}
+
+.btn-gradient {
+  background-image: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}

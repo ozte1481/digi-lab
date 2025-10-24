@@ -1,10 +1,44 @@
+.game-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.game-header {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-label {
+  color: var(--color-support-lavender);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.stats-value {
+  color: var(--color-text-light);
+}
+
+.progress-bar {
+  background-color: var(--color-accent-primary);
+}
+
+.progress-bar.bg-warning {
+  background-color: var(--color-accent-secondary);
+}
+
+.progress-bar.bg-danger {
+  background-color: #dc3545;
+}
+
 .question-area {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
   font-size: 1.5rem;
   user-select: none;
   letter-spacing: 0.1em;
-  background-color: #f8f9fa;
-  border-radius: 8px;
   line-height: 1.8;
+  color: var(--color-support-peach);
 }
 
 .question-area .char {
@@ -12,11 +46,37 @@
 }
 
 .question-area .char.correct {
-  color: #198754;
-  background-color: #d1e7dd;
+  color: #fff;
+  background-color: var(--color-accent-primary);
+  border-radius: 2px;
 }
 
 .question-area .char.incorrect {
-  color: #dc3545;
-  background-color: #f8d7da;
+  color: #fff;
+  background-color: #dc3545;
+  border-radius: 2px;
+}
+
+.form-control {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--color-text-light);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.form-control:focus {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: var(--color-text-light);
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 0.25rem rgba(255, 107, 59, 0.25);
+}
+
+.btn-outline-secondary {
+  color: var(--color-support-lavender);
+  border-color: var(--color-support-lavender);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--color-support-lavender);
+  color: var(--color-bg-main);
+  border-color: var(--color-support-lavender);
 }

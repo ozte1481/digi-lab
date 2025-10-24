@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import type { GameOptions, Language, QuestionLength, ThemeDefinition } from '../types';
+import './ModeSelector.css';
 
 interface ModeSelectorProps {
   onStart: (options: GameOptions) => void;
@@ -67,9 +68,9 @@ const ModeSelector: React.FC<ModeSelectorProps> = ({ onStart, themes, loading, e
   };
 
   return (
-    <div className="card shadow-lg" translate="no">
+    <div className="card mode-selector-card">
       <div className="card-body p-4 p-md-5">
-        <h2 className="card-title text-center fw-bold mb-4">モード選択</h2>
+        <h2 className="card-title text-center fw-bold mb-4 mode-selector-title">モード選択</h2>
 
         {loading && (
           <div className="d-flex justify-content-center my-5">
@@ -157,7 +158,7 @@ const ModeSelector: React.FC<ModeSelectorProps> = ({ onStart, themes, loading, e
             <div className="d-grid mt-4">
               <button
                 onClick={handleStart}
-                className="btn btn-primary btn-lg fw-bold"
+                className="btn btn-lg fw-bold btn-gradient"
                 disabled={!themeId}
               >
                 スタート
