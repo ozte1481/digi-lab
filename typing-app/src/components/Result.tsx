@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react';
+﻿import React, { useMemo } from 'react';
 import type { GameResult } from '../types';
-import './Result.css';
 
 interface ResultProps {
   result: GameResult;
@@ -75,99 +74,103 @@ const Result: React.FC<ResultProps> = ({ result, onRestart }) => {
   }, [currentBand.rank]);
 
   return (
-    <div className="card result-card">
-      <div className="card-header result-header text-center py-4">
-        <h2 className="card-title fw-bold mb-0 result-title">Result</h2>
+    <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px' }} translate="no">
+      <h2 style={{ textAlign: 'center', borderBottom: '1px solid #ccc', paddingBottom: '1rem' }}>{'\u7d50\u679c'}</h2>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', gap: '1rem', textAlign: 'center', margin: '1.5rem 0' }} className="notranslate">
+        <div>
+          <h5>CPM</h5>
+          <p style={{ fontSize: '2rem', margin: 0 }}>{cpm}</p>
+        </div>
+        <div>
+          <h5>{'\u6b63\u78ba\u7387'}</h5>
+          <p style={{ fontSize: '2rem', margin: 0 }}>{accuracy}%</p>
+        </div>
+        <div>
+          <h5>{'\u6b63\u3057\u304f\u6253\u3063\u305f\u6587\u5b57\u6570'}</h5>
+          <p style={{ fontSize: '2rem', margin: 0 }}>{correctCount}</p>
+        </div>
+        <div>
+          <h5>{'\u5165\u529b\u3057\u305f\u6587\u5b57\u6570'}</h5>
+          <p style={{ fontSize: '2rem', margin: 0 }}>{totalTyped}</p>
+        </div>
       </div>
-      <div className="card-body p-4 p-md-5">
-        <div className="row text-center g-4 mb-5">
-          <div className="col-md-3 col-6">
-            <div className="stats-label-result">CPM</div>
-            <div className="display-6 fw-bold stats-value-result">{cpm}</div>
-          </div>
-          <div className="col-md-3 col-6">
-            <div className="stats-label-result">ACCURACY</div>
-            <div className="display-6 fw-bold stats-value-result">{accuracy}%</div>
-          </div>
-          <div className="col-md-3 col-6">
-            <div className="stats-label-result">CORRECT</div>
-            <div className="display-6 fw-bold stats-value-result">{correctCount}</div>
-          </div>
-          <div className="col-md-3 col-6">
-            <div className="stats-label-result">TYPED</div>
-            <div className="display-6 fw-bold stats-value-result">{totalTyped}</div>
-          </div>
-        </div>
 
-        <div className="row bg-dark-subtle rounded p-3 mb-5 text-center">
-          <div className="col-md-3 col-6">
-            <div className="small">SKILL PTS</div>
-            <div className="fs-4 fw-bold">{flow.skillPoints}</div>
-          </div>
-          <div className="col-md-3 col-6">
-            <div className="small">MAX FLOW</div>
-            <div className="fs-4 fw-bold">{flow.maxFlowStreak}</div>
-          </div>
-          <div className="col-md-3 col-6">
-            <div className="small">BONUS</div>
-            <div className="fs-4 fw-bold">+{flow.bonusTimeEarned}s</div>
-          </div>
-          <div className="col-md-3 col-6">
-            <div className="small">TIME</div>
-            <div className="fs-4 fw-bold">{formatSeconds(elapsedSeconds)}</div>
-          </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem', backgroundColor: '#f1f3f5', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
+        <div>
+          <strong>Skill Points</strong>
+          <p style={{ fontSize: '1.5rem', margin: '0.25rem 0 0' }} className="notranslate">{flow.skillPoints}</p>
+          <small style={{ color: '#6c757d' }}>{'\u6d41\u308c\u306b\u4e57\u308c\u305f\u91cf\u306e\u76ee\u5b89'}</small>
         </div>
+        <div>
+          <strong>{'\u6700\u5927\u30d5\u30ed\u30fc'}</strong>
+          <p style={{ fontSize: '1.5rem', margin: '0.25rem 0 0' }} className="notranslate">{flow.maxFlowStreak}</p>
+          <small style={{ color: '#6c757d' }}>{'\u30df\u30b9\u306a\u304f\u9023\u7d9a\u3067\u7a81\u7834\u3057\u305f\u554f\u984c\u6570'}</small>
+        </div>
+        <div>
+          <strong>{'\u30dc\u30fc\u30ca\u30b9\u6642\u9593'}</strong>
+          <p style={{ fontSize: '1.5rem', margin: '0.25rem 0 0' }} className="notranslate">+{flow.bonusTimeEarned}s</p>
+          <small style={{ color: '#6c757d' }}>{'\u96c6\u4e2d\u7d99\u7d9a\u3067\u5f97\u305f\u5ef6\u9577'}</small>
+        </div>
+        <div>
+          <strong>{'\u30d7\u30ec\u30a4\u6642\u9593'}</strong>
+          <p style={{ fontSize: '1.5rem', margin: '0.25rem 0 0' }}>{formatSeconds(elapsedSeconds)}</p>
+          <small style={{ color: '#6c757d' }}>{'\u30bb\u30c3\u30b7\u30e7\u30f3\u5168\u4f53\u306e\u30bf\u30a4\u30e0'}</small>
+        </div>
+      </div>
 
-        <div className={`alert rank-alert text-center border-0 shadow-sm mb-5`}>
-          <h3 className="fw-bold mb-1">
-            Rank: <span className="rank-text">{currentBand.rank}</span> ({currentBand.label})
-          </h3>
-          <p className="mb-2">{currentBand.message}</p>
-          <p className="small text-muted mb-0">{currentBand.skill}</p>
-          {nextBand && (
-            <p className="small mt-2 mb-0">
-              Next: <strong>{nextBand.rank}</strong> ({nextBand.label}) - CPM {nextBand.minCpm}+ / Accuracy {nextBand.minAccuracy}%+
-            </p>
-          )}
-        </div>
+      <div style={{ textAlign: 'center', padding: '1rem', marginBottom: '1.5rem', backgroundColor: '#fff3cd', borderRadius: '8px' }}>
+        <h3 style={{ margin: 0 }}>
+          {'\u8a55\u4fa1'}: <span style={{ color: '#d6336c' }}>{currentBand.rank}</span> <small style={{ color: '#6c757d' }}>({currentBand.label})</small>
+        </h3>
+        <p style={{ margin: '0.75rem 0 0.5rem' }}>{currentBand.message}</p>
+        <p style={{ margin: 0, color: '#6c757d' }}>{currentBand.skill}</p>
+        {nextBand && (
+          <p style={{ marginTop: '0.75rem', color: '#495057' }}>
+            {'\u6b21\u306e\u30e9\u30f3\u30af '} + nextBand.rank + ' (' + nextBand.label + ') ' + '\u306b\u306f CPM ' + nextBand.minCpm + '+ / \u6b63\u78ba\u7387 ' + nextBand.minAccuracy + '%+ \u3092\u76ee\u6307\u3057\u307e\u3057\u3087\u3046\u3002'
+          </p>
+        )}
+      </div>
 
-        <div className="mb-4">
-          <h4 className="fw-bold mb-3">Evaluation Table</h4>
-          <div className="table-responsive">
-            <table className="table table-hover table-sm align-middle small">
-              <thead className="table-dark">
-                <tr>
-                  <th>Rank</th>
-                  <th>Label</th>
-                  <th>Target</th>
-                  <th>Skill Level</th>
-                </tr>
-              </thead>
-              <tbody>
-                {EVALUATION_BANDS.map((band) => {
-                  const isActive = band.rank === currentBand.rank;
-                  return (
-                    <tr key={band.rank} className={isActive ? 'table-primary' : ''}>
-                      <td className="fw-bold">{band.rank}</td>
-                      <td>{band.label}</td>
-                      <td>CPM {band.minCpm}+ / Acc {band.minAccuracy}%+</td>
-                      <td>{band.skill}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <h4 style={{ marginBottom: '0.75rem' }}>{'\u8a55\u4fa1\u30c6\u30fc\u30d6\u30eb'}</h4>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.95rem' }} className="notranslate">
+            <thead>
+              <tr style={{ backgroundColor: '#f8f9fa' }}>
+                <th style={{ padding: '0.5rem', borderBottom: '1px solid #dee2e6', textAlign: 'left' }}>{'\u8a55\u4fa1'}</th>
+                <th style={{ padding: '0.5rem', borderBottom: '1px solid #dee2e6', textAlign: 'left' }}>{'\u6307\u6a19'}</th>
+                <th style={{ padding: '0.5rem', borderBottom: '1px solid #dee2e6', textAlign: 'left' }}>{'\u5b9f\u529b\u306e\u76ee\u5b89'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {EVALUATION_BANDS.map((band) => {
+                const isActive = band.rank === currentBand.rank;
+                return (
+                  <tr key={band.rank} style={{ backgroundColor: isActive ? '#ffe3e9' : 'transparent' }}>
+                    <td style={{ padding: '0.5rem', borderBottom: '1px solid #dee2e6', fontWeight: isActive ? 700 : 500 }}>
+                      {band.rank} <small style={{ color: '#6c757d' }}>({band.label})</small>
+                    </td>
+                    <td style={{ padding: '0.5rem', borderBottom: '1px solid #dee2e6' }}>
+                      {'CPM ' + band.minCpm + '+ / \u6b63\u78ba\u7387 ' + band.minAccuracy + '%+'}
+                    </td>
+                    <td style={{ padding: '0.5rem', borderBottom: '1px solid #dee2e6' }}>{band.skill}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        <div className="d-grid">
-          <button onClick={onRestart} className="btn btn-lg fw-bold btn-gradient">
-            Try Again
-          </button>
-        </div>
+      <div style={{ display: 'grid' }}>
+        <button onClick={onRestart} style={{ padding: '0.75rem', fontSize: '1.25rem' }}>
+          {'\u3082\u3046\u4e00\u5ea6\u6311\u6226\u3059\u308b'}
+        </button>
       </div>
     </div>
   );
 };
 
 export default Result;
+

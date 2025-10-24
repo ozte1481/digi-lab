@@ -3,7 +3,6 @@ import ModeSelector from './components/ModeSelector';
 import TypingGame from './components/TypingGame';
 import Result from './components/Result';
 import type { GameOptions, GameResult, GameState, QuestionBank } from './types';
-import './App.css';
 
 function App() {
   const [gameState, setGameState] = useState<GameState>('selecting');
@@ -88,19 +87,12 @@ function App() {
   };
 
   return (
-    <main className="d-flex flex-column align-items-center justify-content-center min-vh-100 p-3">
+    <div className="d-flex align-items-center justify-content-center min-vh-100" translate="no">
       <div className="container text-center" style={{ maxWidth: '800px' }}>
-        <h1 
-          className="display-4 fw-bold mb-5 text-gradient" 
-          style={{
-            backgroundImage: 'var(--gradient-magic-hour)',
-          }}
-        >
-          Typing Master
-        </h1>
+        <h1 className="mb-4">タイピングアプリ</h1>
         {renderGameState()}
       </div>
-    </main>
+    </div>
   );
 }
 

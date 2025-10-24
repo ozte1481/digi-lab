@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { GameOptions, GameResult, QuestionBank, QuestionPrompt } from '../types';
-import './TypingGame.css';
 
 interface TypingGameProps {
   options: GameOptions;
@@ -47,7 +46,7 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
   const isCopyMode = options.language === 'copy';
 
   const removeOptionalWhitespace = useCallback(
-    (value: string) => (isCopyMode ? value.replace(/[ \t]/g, '') : value),
+    (value: string) => (isCopyMode ? value.replace(/[ 	]/g, '') : value),
     [isCopyMode],
   );
 
@@ -89,15 +88,15 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
     () => removeOptionalWhitespace(questionText),
     [questionText, removeOptionalWhitespace],
   );
-  const elapsedSeconds = Math.max(0, GAME_DURATION - timer);
+  const elapsedSeconds = Math.min(GAME_DURATION, GAME_DURATION - timer);
   const totalForAccuracy = isCopyMode ? scoringTotalTyped : totalTyped;
   const accuracy = totalForAccuracy > 0 ? Math.round((correctTyped / totalForAccuracy) * 100) : 100;
   const effectiveTypedForSpeed =
     options.language === 'japanese'
       ? keystrokeCount
       : isCopyMode
-      ? scoringTotalTyped
-      : totalTyped;
+        ? scoringTotalTyped
+        : totalTyped;
   const cpm = (() => {
     if (effectiveTypedForSpeed === 0) {
       return 0;
@@ -127,8 +126,8 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
       options.language === 'japanese'
         ? keystrokeCount
         : isCopyMode
-        ? scoringTotalTyped
-        : totalTyped;
+          ? scoringTotalTyped
+          : totalTyped;
     const computedCpm = typedForSpeed === 0 ? 0 : typedForSpeed / minutes;
     const totalTypedForResult = isCopyMode ? scoringTotalTyped : totalTyped;
     const result: GameResult = {
@@ -339,164 +338,241 @@ const TypingGame: React.FC<TypingGameProps> = ({ options, questionBank, onFinish
     return `${minutes}:${seconds}`;
   };
 
+  const scoringTypedText = useMemo(
+    () => removeOptionalWhitespace(typedText),
+    [removeOptionalWhitespace, typedText],
+  );
+
   const renderedQuestion = useMemo(() => {
-    const textToRender = questionText.replace(/\\n/g, '\n');
-    const nodes: React.ReactNode[] = [];
-    let currentPosition = 0;
+    if (!isCopyMode) {
+      const elements: React.ReactNode[] = [];
 
-    textToRender.split('\n').forEach((line, lineIndex) => {
-      if (lineIndex > 0) {
-        nodes.push(<br key={`br-${lineIndex}`} />);
-      }
+      for (let index = 0; index < questionText.length; index += 1) {
+        const char = questionText[index];
 
-      for (const char of line) {
-        const isTyped = currentPosition < typedText.length;
-        const typedChar = isTyped ? typedText[currentPosition] : null;
+        if (char === '\\n') {
+          elements.push(<br key={`${currentQuestionIndex}-break-${index}`} />);
+          continue;
+        }
+
+        const isTyped = index < typedText.length;
+        const typedChar = typedText[index] ?? '';
         const isCorrect = isTyped && typedChar === char;
 
-        nodes.push(
+        elements.push(
           <span
-            key={`char-${currentPosition}`}
-            className={`char ${isTyped ? (isCorrect ? 'correct' : 'incorrect') : ''}`}
+            key={`${currentQuestionIndex}-${index}`}
+            style={{
+              color: isTyped ? (isCorrect ? '#198754' : '#dc3545') : '#212529',
+              backgroundColor: isTyped ? (isCorrect ? '#d1e7dd' : '#f8d7da') : 'transparent',
+              borderBottom: char === ' ' ? '1px dotted rgba(108, 117, 125, 0.6)' : 'none',
+              padding: char === ' ' ? '0 0.1em' : 0,
+              display: char === ' ' ? 'inline-block' : 'inline',
+              minWidth: char === ' ' ? '0.4em' : undefined,
+            }}
           >
-            {char}
+            {char === ' ' ? ' ' : char}
           </span>,
         );
-        currentPosition++;
       }
-    });
 
-    return nodes;
-  }, [questionText, typedText]);
+      return elements;
+    }
+
+
+    const elements: React.ReactNode[] = [];
+    let scoringCursor = 0;
+
+    for (let index = 0; index < questionText.length; index += 1) {
+      const char = questionText[index];
+
+      if (char === '\\n') {
+        const hasTypedNewline = scoringCursor < scoringTypedText.length && scoringTypedText[scoringCursor] === '\\n';
+        if (hasTypedNewline) {
+          scoringCursor += 1;
+        }
+        elements.push(<br key={`${currentQuestionIndex}-break-${index}`} />);
+        continue;
+      }
+
+      if (char === ' ' || char === '	') {
+        const isTyped = scoringTypedText.length > scoringCursor;
+        elements.push(
+          <span
+            key={`${currentQuestionIndex}-${index}`}
+            style={{
+              color: isTyped ? '#198754' : '#212529',
+              backgroundColor: isTyped ? '#d1e7dd' : 'transparent',
+              borderBottom: '1px dotted rgba(108, 117, 125, 0.6)',
+              padding: char === ' ' ? '0 0.1em' : '0 0.3em',
+              display: 'inline-block',
+              minWidth: char === ' ' ? '0.4em' : '1.2em',
+            }}
+          >
+            {char === ' ' ? ' ' : '  '}
+          </span>,
+        );
+        continue;
+      }
+
+      const hasTypedChar = scoringCursor < scoringTypedText.length;
+      const typedChar = hasTypedChar ? scoringTypedText[scoringCursor] : '';
+      const isCorrect = hasTypedChar && typedChar === char;
+      if (hasTypedChar) {
+        scoringCursor += 1;
+      }
+
+      elements.push(
+        <span
+          key={`${currentQuestionIndex}-${index}`}
+          style={{
+            color: hasTypedChar ? (isCorrect ? '#198754' : '#dc3545') : '#212529',
+            backgroundColor: hasTypedChar ? (isCorrect ? '#d1e7dd' : '#f8d7da') : 'transparent',
+            borderBottom: 'none',
+            padding: 0,
+            display: 'inline',
+          }}
+        >
+          {char === ' ' ? ' ' : char}
+        </span>,
+      );
+    }
+
+
+
+    return elements;
+  }, [currentQuestionIndex, isCopyMode, questionText, scoringTypedText, typedText]);
+
+
 
   if (!selectedTheme) {
     return (
-      <div className="alert alert-danger text-center">
+      <div style={{ textAlign: 'center' }}>
         <p>選択されたテーマの読み込みに失敗しました。</p>
-        <button onClick={onReset} className="btn btn-sm btn-danger">モード選択に戻る</button>
+        <button onClick={onReset}>モード選択に戻る</button>
       </div>
     );
   }
 
   if (questions.length === 0) {
-    return (
-      <div className="d-flex justify-content-center my-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
+    return <p style={{ textAlign: 'center' }}>問題を準備中です...</p>;
   }
 
-  const timeRatio = (timer / GAME_DURATION) * 100;
-
   return (
-    <div className="card game-card">
-      <div className="card-header game-header">
-        <div className="row align-items-center text-center g-2">
-          <div className="col-md-3">
-            <div className="stats-label">TIME</div>
-            <div className="fs-4 fw-bold stats-value">{formatTime(timer)}</div>
+    <div className="card" translate="no">
+      <div className="card-header bg-light text-dark notranslate">
+        <div className="row text-center">
+          <div className="col">
+            <h5 className="mb-0">Time: {formatTime(timer)}</h5>
           </div>
-          <div className="col-md-3">
-            <div className="stats-label">CPM</div>
-            <div className="fs-4 fw-bold stats-value">{cpm}</div>
+          <div className="col">
+            <h5 className="mb-0">CPM: {cpm}</h5>
           </div>
-          <div className="col-md-3">
-            <div className="stats-label">ACCURACY</div>
-            <div className="fs-4 fw-bold stats-value">{accuracy}%</div>
+          <div className="col">
+            <h5 className="mb-0">Accuracy: {accuracy}%</h5>
           </div>
-          <div className="col-md-3">
-            <div className="stats-label">FLOW</div>
-            <div className="fs-4 fw-bold stats-value">{flowStreak}</div>
+          <div className="col">
+            <h5 className="mb-0">Flow: {flowStreak}</h5>
           </div>
-        </div>
-        <div className="progress mt-2" style={{ height: '4px' }}>
-          <div
-            className={`progress-bar ${timeRatio < 15 ? 'bg-danger' : timeRatio < 40 ? 'bg-warning' : ''}`}
-            role="progressbar"
-            style={{ width: `${timeRatio}%` }}
-            aria-valuenow={timer}
-            aria-valuemin={0}
-            aria-valuemax={GAME_DURATION}
-          ></div>
         </div>
       </div>
-      <div className="card-body p-4">
-        <div className="row text-center mb-4 g-3">
-          <div className="col">
-            <div className="stats-label">SKILL PTS</div>
-            <div className="fs-5 fw-bold">{skillPoints}</div>
-          </div>
-          <div className="col">
-            <div className="stats-label">MAX FLOW</div>
-            <div className="fs-5 fw-bold">{maxFlowStreak}</div>
-          </div>
-          <div className="col">
-            <div className="stats-label">BONUS</div>
-            <div className="fs-5 fw-bold">+{bonusTimeEarned}s</div>
-          </div>
+      <div className="card-body">
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1rem', backgroundColor: '#f1f3f5', borderRadius: '8px', padding: '0.75rem' }}>
+        <div>
+          <strong>Skill Points</strong>
+          <div style={{ fontSize: '1.25rem' }} className="notranslate">{skillPoints}</div>
         </div>
+        <div>
+          <strong>Max Flow</strong>
+          <div style={{ fontSize: '1.25rem' }} className="notranslate">{maxFlowStreak}</div>
+        </div>
+        <div>
+          <strong>Bonus Time</strong>
+          <div style={{ fontSize: '1.25rem' }} className="notranslate">+{bonusTimeEarned}s</div>
+        </div>
+      </div>
 
-        <div
-          className="question-area p-4 rounded user-select-none mb-4"
+      <div
+        style={{
+          fontSize: isCopyMode ? '1rem' : '1.5rem',
+          fontFamily: isCopyMode ? '"Fira Code", "Menlo", "Consolas", monospace' : 'inherit',
+          userSelect: 'none',
+          letterSpacing: isCopyMode ? '0.05em' : '0.1em',
+          padding: '1rem',
+          backgroundColor: '#f8f9fa',
+          borderRadius: '8px',
+          whiteSpace: 'pre-wrap',
+          lineHeight: isCopyMode ? '1.6' : '1.8',
+        }}
+        lang={options.language === 'english' ? 'en' : 'ja'}
+        className="notranslate"
+      >
+        {renderedQuestion}
+      </div>
+
+      {isCopyMode && currentQuestion?.explanation && (
+        <div style={{ marginTop: '1rem', padding: '0.75rem', backgroundColor: '#fff3cd', borderRadius: '8px', color: '#856404' }}>
+          <strong>処理の概要</strong>
+          <p style={{ marginTop: '0.5rem', marginBottom: 0 }}>{currentQuestion.explanation}</p>
+        </div>
+      )}
+
+      {isCopyMode ? (
+        <textarea
+          ref={assignInputRef}
+          value={typedText}
+          onChange={handleTyping}
+          onKeyDown={handleKeyDown}
+          onCompositionStart={() => {
+            isComposingRef.current = true;
+          }}
+          onCompositionEnd={(event) => {
+            isComposingRef.current = false;
+            processInputValue(event.currentTarget.value, { forceProcess: true });
+          }}
+          placeholder={isGameRunning ? '' : 'ここにコードを書き写してください'}
+          rows={Math.max(6, questionText.split('\n').length + 2)}
+          disabled={timer === 0 || hasFinishedRef.current}
+          onPaste={(event) => event.preventDefault()}
+          style={{
+            width: '100%',
+            marginTop: '1rem',
+            padding: '0.75rem',
+            fontSize: '1rem',
+            fontFamily: '"Fira Code", "Menlo", "Consolas", monospace',
+            whiteSpace: 'pre',
+            boxSizing: 'border-box',
+          }}
+          className="notranslate"
+        />
+      ) : (
+        <input
+          ref={assignInputRef}
+          type="text"
+          value={typedText}
+          onChange={handleTyping}
+          onKeyDown={handleKeyDown}
+          onCompositionStart={() => {
+            isComposingRef.current = true;
+          }}
+          onCompositionEnd={(event) => {
+            isComposingRef.current = false;
+            processInputValue(event.currentTarget.value, { forceProcess: true });
+          }}
+          placeholder={isGameRunning ? '' : 'Start typing here...'}
+          autoFocus
+          disabled={timer === 0 || hasFinishedRef.current}
+          onPaste={(event) => event.preventDefault()}
+          style={{ width: '100%', marginTop: '1rem', padding: '0.5rem', fontSize: '1rem' }}
           lang={options.language === 'english' ? 'en' : 'ja'}
-        >
-          {renderedQuestion}
-        </div>
+          className="notranslate"
+        />
+      )}
 
-        {isCopyMode && currentQuestion?.explanation && (
-          <div className="alert alert-info small mt-4">
-            <strong>処理の概要:</strong> {currentQuestion.explanation}
-          </div>
-        )}
-
-        {isCopyMode ? (
-          <textarea
-            ref={assignInputRef}
-            value={typedText}
-            onChange={handleTyping}
-            onKeyDown={handleKeyDown}
-            onCompositionStart={() => {
-              isComposingRef.current = true;
-            }}
-            onCompositionEnd={(event) => {
-              isComposingRef.current = false;
-              processInputValue(event.currentTarget.value, { forceProcess: true });
-            }}
-            placeholder={isGameRunning ? '' : 'ここにコードを書き写してください'}
-            rows={Math.max(6, questionText.split('\n').length + 2)}
-            disabled={timer === 0 || hasFinishedRef.current}
-            onPaste={(event) => event.preventDefault()}
-            className="form-control form-control-lg font-monospace"
-          />
-        ) : (
-          <input
-            ref={assignInputRef}
-            type="text"
-            value={typedText}
-            onChange={handleTyping}
-            onKeyDown={handleKeyDown}
-            onCompositionStart={() => {
-              isComposingRef.current = true;
-            }}
-            onCompositionEnd={(event) => {
-              isComposingRef.current = false;
-              processInputValue(event.currentTarget.value, { forceProcess: true });
-            }}
-            placeholder={isGameRunning ? '' : 'Start typing here...'}
-            autoFocus
-            disabled={timer === 0 || hasFinishedRef.current}
-            onPaste={(event) => event.preventDefault()}
-            className="form-control form-control-lg text-center"
-            lang={options.language === 'english' ? 'en' : 'ja'}
-          />
-        )}
-
-        <div className="text-center mt-4">
-          <button onClick={onReset} className="btn btn-outline-secondary btn-sm">リセット</button>
-        </div>
+      <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+        <button onClick={onReset}>リセット</button>
       </div>
+    </div>
     </div>
   );
 };
