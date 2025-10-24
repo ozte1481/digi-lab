@@ -1,0 +1,22 @@
+.question-area {
+  font-size: 1.5rem;
+  user-select: none;
+  letter-spacing: 0.1em;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  line-height: 1.8;
+}
+
+.question-area .char {
+  transition: all 0.1s ease-in-out;
+}
+
+.question-area .char.correct {
+  color: #198754;
+  background-color: #d1e7dd;
+}
+
+.question-area .char.incorrect {
+  color: #dc3545;
+  background-color: #f8d7da;
+}

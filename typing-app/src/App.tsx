@@ -87,12 +87,12 @@ function App() {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center min-vh-100" translate="no">
+    <main className="d-flex flex-column align-items-center justify-content-center min-vh-100 p-3" translate="no">
       <div className="container text-center" style={{ maxWidth: '800px' }}>
-        <h1 className="mb-4">タイピングアプリ</h1>
+        <h1 className="display-4 fw-bold mb-5">Typing Master</h1>
         {renderGameState()}
       </div>
-    </div>
+    </main>
   );
 }
 
