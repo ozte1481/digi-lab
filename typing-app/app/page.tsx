@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { englishThemes, japaneseThemes, programmingThemes } from "./data/themes";
-import type { Mode, SessionResult, ThemeCollection, ThemeLength } from "./types";
+import type { Mode, ProblemMeta, SessionResult, ThemeCollection, ThemeLength } from "./types";
 
 const MODE_OPTIONS: Array<{ value: Mode; label: string }> = [
   { value: "japanese", label: "日本語" },
@@ -74,6 +74,7 @@ export default function TypingApp(): React.ReactElement {
   const [textLength, setTextLength] = useState<ThemeLength>("short");
   const [selectedTheme, setSelectedTheme] = useState<string>(INITIAL_THEME_BY_MODE.japanese);
   const [currentText, setCurrentText] = useState<string>("");
+  const [currentProblemMeta, setCurrentProblemMeta] = useState<ProblemMeta | null>(null);
   const [currentProblemIndex, setCurrentProblemIndex] = useState<number>(0);
   const [userInput, setUserInput] = useState<string>("");
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -120,6 +121,7 @@ export default function TypingApp(): React.ReactElement {
     setStartTime(null);
     setCurrentProblemIndex(0);
     setCurrentText("");
+    setCurrentProblemMeta(null);
   }, []);
 
   const startProblem = useCallback(
@@ -128,8 +130,10 @@ export default function TypingApp(): React.ReactElement {
       if (!data) return;
 
       const texts = textLength === "short" ? data.short : data.long;
+      const metaList = textLength === "short" ? data.shortMeta ?? [] : data.longMeta ?? [];
       if (texts.length === 0) {
         setCurrentText("");
+        setCurrentProblemMeta(null);
         setCurrentProblemIndex(0);
         setUserInput("");
         setIsComplete(false);
@@ -140,6 +144,7 @@ export default function TypingApp(): React.ReactElement {
       const nextIndex = ((index % texts.length) + texts.length) % texts.length;
       setCurrentProblemIndex(nextIndex);
       setCurrentText(texts[nextIndex]);
+      setCurrentProblemMeta(metaList[nextIndex] ?? null);
       setUserInput("");
       setIsComplete(false);
       setStartTime(null);
@@ -295,6 +300,10 @@ export default function TypingApp(): React.ReactElement {
   const typingLevel = isComplete ? evaluateTypingSkill(cpm, errorRate) : "";
   const evaluationDescription = typingLevel ? EVALUATION_DESCRIPTIONS[typingLevel] : "";
   const currentThemeName = selectedThemeData?.name ?? "";
+  const themeDetailLabel = selectedThemeData?.detailLabel ?? currentThemeName;
+  const themeContextLabel = [selectedThemeData?.categoryLabel, selectedThemeData?.topicLabel].filter(Boolean).join(" / ");
+  const currentProblemDescription = currentProblemMeta?.description ?? "";
+  const currentProblemLanguage = currentProblemMeta?.language;
 
   const summaryStats = useMemo(() => {
     if (!showSummary || results.length === 0) return null;
@@ -469,6 +478,26 @@ export default function TypingApp(): React.ReactElement {
                       {typingLevel}
                     </Badge>
                   </div>
+                )}
+              </div>
+
+              <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">出題テーマ</p>
+                    <p className="text-base font-semibold">{themeDetailLabel}</p>
+                    {themeContextLabel && (
+                      <p className="text-xs text-muted-foreground">{themeContextLabel}</p>
+                    )}
+                  </div>
+                  {currentProblemLanguage && (
+                    <Badge variant="outline" className="font-mono text-xs">
+                      {currentProblemLanguage}
+                    </Badge>
+                  )}
+                </div>
+                {currentProblemDescription && (
+                  <p className="mt-2 text-sm text-muted-foreground">{currentProblemDescription}</p>
                 )}
               </div>
 

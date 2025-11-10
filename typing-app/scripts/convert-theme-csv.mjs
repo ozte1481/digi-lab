@@ -76,6 +76,7 @@ function buildThemeCollection(rows) {
   const [header, ...data] = rows;
   const idxColumn = header.indexOf("インデックス");
   const themeColumn = header.indexOf("テーマ");
+  const categoryColumn = header.indexOf("カテゴリ");
   const topicColumn = header.indexOf("トピック");
 
   const getColumnIndex = (index) => header.indexOf(`説明${index.toString().padStart(2, "0")}`);
@@ -113,6 +114,9 @@ function buildThemeCollection(rows) {
       name: name || `Theme ${key}`,
       short,
       long: long.length > 0 ? long : short,
+      theme,
+      topic,
+      category: categoryColumn >= 0 ? row[categoryColumn]?.trim() ?? "" : "",
     };
   }
 
